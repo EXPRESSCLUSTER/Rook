@@ -4,7 +4,7 @@
 - [Deploy Ceph](#deploy-ceph)
 
 ## Evaluation Environment
-- Each worker node of kubernetes has 20GB disk (e.g. /dev/sdb) for Ceph.
+- Each worker node of kubernetes has 40GB disk (e.g. /dev/sdb) for Ceph.
   ```
   +-------------------------------------------+
   | Windows Server                            | 
