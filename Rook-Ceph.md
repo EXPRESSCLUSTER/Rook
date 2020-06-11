@@ -7,30 +7,30 @@
 ## Evaluation Environment
 - Each worker node of kubernetes has 40GB disk (e.g. /dev/sdb) for Ceph.
   ```
-  +-------------------------------------------+
-  | Windows Server                            | 
-  | - Hyper-V                                 |
-  | +------------------------+                |
-  | | Master (Control Plane) |                |
-  | | Ubuntu 20.04 LTS       |                |
-  | | kubernetes 1.18.3      |                |
-  | | Docker 19.03.10        |                |
-  | +------+-----------------+                |
-  |        |                                  |
-  | +------+-------------+  +----------+      |
-  | | Worker #1, #2, #3  |  |          |      |
-  | | Ubuntu 20.04 LTS   +--+ /dev/sdb |      |
-  | | kubernetes 1.18.3  |  |     40GB |      |
-  | | Docker 19.03.10    |  |          |      |
-  | +--------------------+  +----------+      |
-  +-------------------------------------------+
+  +--------------------------------------+
+  | Windows Server                       | 
+  | - Hyper-V                            |
+  | +-------------------+                |
+  | | Control Plane     |                |
+  | | Ubuntu 20.04 LTS  |                |
+  | | kubernetes 1.18.3 |                |
+  | | Docker 19.03.10   |                |
+  | +------+------------+                |
+  |        |                             |
+  | +------+------------+  +----------+  |
+  | | Node #1, #2, #3   |  |          |  |
+  | | Ubuntu 20.04 LTS  +--+ /dev/sdb |  |
+  | | kubernetes 1.18.3 |  |     40GB |  |
+  | | Docker 19.03.10   |  |          |  |
+  | +-------------------+  +----------+  |
+  +--------------------------------------+
   ```
 ## Prerequisite
-- Install git command on master node.
+- Install git command on control plane node.
 - Ceph uses Paxos algorithm. If your machines cannot communicate within Ceph's timeout, Ceph cluster does not work well. You need to check Ceph's system requirement.
 
 ## Deploy Ceph
-1. Create a kubernetes cluster with 1 master and 3 workers refer to the following page.
+1. Create a kubernetes cluster with one control plane and three nodes refer to the following page.
    - https://github.com/EXPRESSCLUSTER/kubernetes/blob/master/HowToInstallK8s.md
 1. Download the files from Rook GitHub.
    ```sh
@@ -76,4 +76,8 @@
    rook-discover-6thpp                                    1/1     Running     0          2d
    rook-discover-8mrmw                                    1/1     Running     0          2d
    rook-discover-mdxmm                                    1/1     Running     0          2d
+   ```
+1. Create storage class.
+   ```sh
+   $ kubectl apply -f cluster/example/kubernetes/ceph/csi/rbd/storageclass.yaml
    ```
